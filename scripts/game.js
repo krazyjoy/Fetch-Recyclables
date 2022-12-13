@@ -77,33 +77,10 @@ class Game{
         this.robot.add(robotBody);
        
         
-        
+        console.log("robot: ", this.robot.position);
         scene.add(this.robot);
        
-        // const x = 0, y=0;
-        //  // https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_shapes.html
-        //  const scannerShape = new THREE.Shape()
-        //  const unit = 0.002
-        //  scannerShape.moveTo(x+ 4*unit,y+ unit);
-        //  scannerShape.lineTo(2*unit,4*unit);
-        //  scannerShape.lineTo(6*unit,4*unit);
-        //  scannerShape.lineTo(4*unit,unit);
-     
-        //  const extrudeSettings = {
-        //      steps: 2,
-        //      depth: 1,
-        //      bevelEnabled: true,
-        //      bevelThickness: 1,
-        //      bevelSize: 1,
-        //      bevelOffset: 0,
-        //      bevelSegments: 1
-        //  };
-         
-        //  const scanner = new THREE.Mesh( 
-        //      new THREE.ExtrudeGeometry( scannerShape, extrudeSettings ),
-        //      new THREE.MeshBasicMaterial( { color: 0x00ff00 } )
-        //  ) ;
- 
+       
          
         //  this.robot.add(scanner);
         //  scanner.position.set(0,0,0);
@@ -192,7 +169,9 @@ class Game{
 
       // randomness
       this._setupObstacles(bottle);
-
+      console.log("bottle position: ", bottle.position);
+      this._bottleScore(bottle);
+      console.log("bottle scale", bottle.scale)
       this.objectsParent.add(bottle);
     }
     _createCarton(){
@@ -201,34 +180,39 @@ class Game{
 
       const carton = new THREE.Mesh(boxGeometry, material);
 
-      this._setupObstacles(carton)
+      this._setupObstacles(carton);
+      console.log("box position: ", carton.position);
       this._cartonScore(carton);
 
       this.objectsParent.add(carton);
     }
-    _setupObstacles(obj, refXPos = 0, refYPos = 1,refZPos = 0){
+    _setupObstacles(obj, refXPos = 0, refYPos = 1,refZPos = 0.05){
       // random scale
-      
-      // obj.scale.set(
-      //   this._randomFloat(0.5,2),
-      //   this._randomFloat(0.5,2),
-      //   this._randomFloat(0.5,2)
-      // );
+      const objScale = this._randomFloat(1,3);
+      obj.scale.set(
+        objScale,
+        objScale,
+        objScale
+      );
 
       // random position
       obj.position.set(
-        refXPos + this._randomFloat(-50, 50),
-        obj.scale.y * 0.5,
-        refYPos + 0.0005,
-        refZPos - 140 - this._randomFloat(0,100)
+        refXPos, 
+        
+        refYPos,
+        //refZPos - 140 - this._randomFloat(0,100)
+        refZPos 
       );
     }
     _randomFloat(min, max){
-      return Math.random() * (max-min) + min;
-
+      //return Math.random() * (max-min) + min;
+      return Math.random()/1000
     }
     _bottleScore(obj){
-
+      const price = this._randomFloat(3,5);
+      const ratio = price/20; // deduce size and color of carton
+      const size = ratio ;
+      obj.scale.set(10, 1, 1);
     }
     _randomInt(min, max){
       min = Math.ceil(min);
@@ -239,7 +223,7 @@ class Game{
     _cartonScore(obj){
       const price = this._randomInt(5,20);
       const ratio = price/20; // deduce size and color of carton
-      const size = ratio * 0.5;
+      const size = ratio * 0.3;
       obj.scale.set(size, size, size);
 
       // remap hue color 0.5~1 based on price 5~20
@@ -255,8 +239,8 @@ class Game{
       this.objectsParent = new THREE.Group()
       scene.add(this.objectsParent);
 
-      for (let i = 0; i < 3; i++){
-        this._createBottle();
+      for (let i = 0; i < 2; i++){
+        this._createBottle(); // 裡面含有this.objectsParent.add(obj)
         this._createCarton();
       }
       // set up camera
