@@ -1,7 +1,5 @@
 # Fetch Recyclables - JavaScript Term Project
 
-Link of Reference:
-https://medium.com/geekculture/making-a-3d-web-runner-game-4-making-an-infinite-plane-with-a-shader-48a0c63bc8d2
 
 https://sketchfab.com/3d-models/ocean-wave-sim-0e5033a2469e499d875f3a75ba54ae9b
 ## Structure
